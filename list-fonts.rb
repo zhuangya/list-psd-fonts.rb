@@ -6,9 +6,13 @@ psd.parse!
 
 result = []
 psd.tree.descendant_layers.each do |l|
-  next unless l[:text]
+  begin
+    next unless l.layer[:text]
 
-  result |= l[:text][:font][:fonts]
+    result |= l[:text][:font][:fonts]
+  rescue StandardError
+    warn "something went wrong on layer: #{l[:name]}"
+  end
 end
 
-pp result
+puts result.sort.join("\n")
